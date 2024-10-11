@@ -1,7 +1,7 @@
 import React from 'react'
-import MainCrosel from '../../components/Navigation/HomeCarosel/MainCrosel'
-import HomeSectionCard from '../../components/Navigation/HomeSectionCard/HomeSectioncard'
-import HomeSectionCarosel from '../../components/Navigation/HomeSectionCarosel/HomeSectionCarosel'
+import MainCrosel from '../../components/HomeCarosel/MainCrosel'
+import HomeSectionCard from '../../components/HomeSectionCard/HomeSectioncard'
+import HomeSectionCarosel from '../../components/HomeSectionCarosel/HomeSectionCarosel'
 import { mens_kurta } from '../../../Data/mens_kurta'
 
 const HomePage = () => {
