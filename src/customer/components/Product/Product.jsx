@@ -2,7 +2,7 @@
 'use client'
 import { mens_kurta } from '../../../Data/mens_kurta'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -19,9 +19,12 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import ProductCard from './ProductCard'
 import { filters, singleFilter } from './FilterData'
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
+import { colors, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Category } from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { findProducts } from '../../../State/Product/Action'
 const sortOptions = [
 
   { name: 'Price: Low to High', href: '#', current: false },
@@ -37,6 +40,8 @@ export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const location=useLocation();
   const navigate=useNavigate();
+  const param=useParams();
+  const dispatch=useDispatch();
 
   const decodedQueryString=decodeURIComponent(location.search);
   const searchParamms=new URLSearchParams(decodedQueryString);
@@ -83,7 +88,34 @@ export default function Product() {
     searchParams.set(sectionId,e.target.value)
     const query=searchParams.toString();
       navigate({search:`?${query}`})
+  };
+
+
+
+useEffect(()=>{
+
+  const [minPrice,maxPrice]=priceValue===null?[0,10000]:priceValue.split("-").map(Number);
+
+  const data={
+    category:param.levelThree,
+    colors:colorValue || [],
+    sizes:sizevalue | [],
+    minPrice ,
+    maxPrice,
+    minDiscount:discount || 0,
+    sort:sortValue || "price_low",
+    pageNumber:pageNumber - 1,
+    pageSize: 10,
+    stock:stock
+    
   }
+  dispatch(findProducts(data))
+    },[param.levelThree,colorValue,sizevalue,priceValue,discount,sortValue,pageNumber,stock])
+
+
+
+
+
   return (
     <div className="bg-white">
       <div>
